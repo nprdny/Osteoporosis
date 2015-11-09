@@ -358,7 +358,7 @@ function open_Callback(hObject, eventdata, handles)
         
 % Classification
         Classif = load('SVM_6_37.mat');
-        Validasi = svmclassify(Classif, Fraksi);
+        Validasi = svmclassify(Classif.Pelatihan1, Fraksi);
         
         if Validasi == 1
             Prediksi = 'Normal';
@@ -368,7 +368,7 @@ function open_Callback(hObject, eventdata, handles)
 
 % Display fraction        
         
-message = sprintf('Fraksi kanan-1 = %.3f\nFraksi kanan-2 = %.3f\nFraksi kanan-3 = %.3f\nFraksi kiri-1  = %.3f\nFraksi kiri-2  = %.3f\nFraksi kiri-3  = %.3f\nPrediksi status kesehatan tulang  = %.3f', ...
+message = sprintf('Fraksi kanan-1 = %.3f\nFraksi kanan-2 = %.3f\nFraksi kanan-3 = %.3f\nFraksi kiri-1  = %.3f\nFraksi kiri-2  = %.3f\nFraksi kiri-3  = %.3f\nPrediksi status kesehatan tulang  = %s', ...
 fraksi1, fraksi2, fraksi3, fraksi4, fraksi5, fraksi6, Prediksi);
 msgbox(message);
 
@@ -398,7 +398,6 @@ function reset_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
         cla(handles.axes1);
-        cla(handles.axes5);
         cla(handles.axes8);
         cla(handles.axes9);
 guidata(hObject, handles);
