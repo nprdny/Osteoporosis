@@ -10,8 +10,10 @@ if col == 3
 	F = rgb2gray(F./255);
 end
 
-H = mean(F);
-% H=H'./sum(H);
+Fcrop = F(1:end/2, :); % we only need the upper half of the image
+
+H = mean(Fcrop);
+H=H'./sum(H);
 [n,tmp] = size(H);
 
 T = sum(H);
