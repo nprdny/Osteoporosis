@@ -3,7 +3,7 @@ close all;
 clc;
 
 k = 4; % number of gaussian
-F = double(imread('S20.TIF'));
+F = double(imread('S9.tif'));
 [ysize,xsize,col] = size(F);
 
 if col == 3
@@ -11,8 +11,36 @@ if col == 3
 end
 
 Fcrop = F(1:end/2, :); % we only need the upper half of the image
+[ysize_crop,xsize_crop,col_crop] = size(Fcrop);
 
-H = mean(Fcrop);
+
+% histogram computation
+histo=zeros(256,1);
+for ii = 1 : ysize_crop
+    for jj = 1 : xsize_crop
+        histo(Fcrop(ii,jj)+1)=histo(Fcrop(ii,jj)+1)+1;
+    end
+end
+
+
+% multi_thresholding
+num=7; % number of iteration
+[label, thresholds]=otsu_multi(histo,num);
+
+% results
+
+OUT=zeros(size(Fcrop));
+for ii = 1 : ysize_crop
+    for jj = 1 : xsize_crop
+        if label(Fcrop(ii,jj)+1)>1 && label(Fcrop(ii,jj)+1)<num+1
+            OUT(ii,jj)=Fcrop(ii,jj);
+        end
+    end
+end
+
+OUT = (OUT./255);
+
+H = mean(OUT);
 H=H'./sum(H);
 [n,tmp] = size(H);
 
@@ -84,7 +112,11 @@ plot(yoko,y,'b-','LineWidth',1.5);
 
 figure(1);
 plot(H,'g-','LineWidth',1.5);
-% % % 
-% % % figure(2);
-% % % imshow(F);
-print('S20_v','-dpng')
+
+
+figure(2);
+imshow(OUT);
+
+
+print(figure(1),'...\S9_v_7','-dpng');
+print(figure(2),'...\S9_7','-dpng');
